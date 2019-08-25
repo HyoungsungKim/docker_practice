@@ -77,3 +77,27 @@ docker image build -t test:latest .
 
 ***Don't forget `.` It means current location of `Dockerfile`***
 
+- Filtering the output of docker Image ls
+
+example)
+
+```
+docker image ls --filter dangling=true
+docker image ls --filter=reference="*.latest"
+docker image ls --format "{{.Size}}"
+docker image ls ==format "{{.Repository}}: {{.Tag}}: {{.Size}}"
+```
+
+- Searching Docker Hub from the CLI
+
+```
+docker search <NAME>
+```
+
+example)
+
+```
+docker search unbuntu
+docker search ubuntu --filter "is-official=true"
+```
+
