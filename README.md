@@ -101,3 +101,21 @@ docker search unbuntu
 docker search ubuntu --filter "is-official=true"
 ```
 
+- See the layer of an image
+
+```
+docker image inspect <container>
+```
+
+example)
+
+```
+docker image inspect ubuntu:latest
+```
+
+- Delete Image
+
+```
+docker image rm <image ID>
+```
+
