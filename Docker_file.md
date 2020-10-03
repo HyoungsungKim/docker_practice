@@ -60,3 +60,50 @@ FROM centos:centos7
 
 ## Dokerfile의 빌드와 이미지 레이어
 
+Dockerfile을 빌드하면 dockerfile에 정의된 구성을 바탕으로 한 docker이미지를 작성 할 수 있음.
+
+### Dockerfile로부터 Docker  이미지 만들기
+
+```
+docker build -t [name_of_image]:[name_of_tag] [Dockerfile_directory]
+```
+
+Example)
+
+```
+docker build -t sample:1.0 /home/docker/sample
+```
+
+- /home/docker/sample 경로에 있는 dockerfile을 이용하여 sample 이라는 docker 이미지 생성
+
+### Docker  이미지의 레이어 구조
+
+Dockerfile을 빌드하여 Docker 이미지를 작성하면 dockerfile의 명령별로 이미지를 작성함
+
+## 명령 및 데몬 실행
+
+### 명령 실행
+
+```
+RUN [command]
+```
+
+- Shell 형식으로 기술
+
+Example)
+
+```
+RUN apt-get install -y nginx
+```
+
+- Exec 형식으로 기술
+  - 실행하고 싶은 명령을 JSON 배열로 지정 함
+
+ Example)
+
+```
+RUN ["/bin/bash", "-c", "apt-get install -y nginx"]
+```
+
+
+
