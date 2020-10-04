@@ -105,5 +105,107 @@ RUN apt-get install -y nginx
 RUN ["/bin/bash", "-c", "apt-get install -y nginx"]
 ```
 
+### 데몬 실행
 
+- `RUN` : 이미지 작성하기 위해 실행하는 명령어 기술
+- `CMD` : 이미지를 바탕으로 생성된 컨테이너 안에서 명령을 실행하려면 CMD 명령을 사용 함
+  - Dockerfile에서는 하나의 명령을 기술 할 수 있음
+  - 여러개를 지정하면 마지막것만 유요함
 
+```dockerfile
+CMD [command]
+```
+
+#### Exec 형식으로 기술
+
+``` dockerfile
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+#### Shell 형식으로 기술
+
+```dockerfile
+CMD nginx -g 'deamon off;'
+```
+
+### ENTRYPOINT 명령의 파라미터로 기술
+
+`ENTRYPOINT` 명령에서 지정한 명령은 Dockerfile에서 빌드한 이미지로부터  Docker 컨테이너를 시작하기 때문에 docker container run 명령을 실행했을 때 실행 됨
+
+```
+ENTRYPOINT [command]
+```
+
+#### Exec 형식
+
+```
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
+```
+
+#### Shell 형식
+
+```
+ENTRYPOINT nginx -g 'daemon off;'
+```
+
+##### ENTRYPOINT와 CMD 명령의 차이
+
+docker container run  명령 실행 시
+
+- ` CMD` : 컨테이너 시작 시에 실행하고 싶은 명령을 정의해도 docker container run 명령 실행 시 인수로 새로운 명령을 지정한 경우 이것을 우선 실행 함
+- `ENTRYPOINT` : 명령에서 지정한 명령은 반드시 컨테이너에서 실행 됨. default 값으로 실행 하고 싶을 때 사용
+
+Example
+
+```dockerfile
+FROM ubuntu:16.04
+
+ENTRYPOINT ["top"]
+CMD ["-d", "10"]
+```
+
+### 빌드 완료 후에 실행되는 명령(ONBUILD)
+
+- `ONBUILD` 명령은 그 다음 빌드에서 실행할 명령을 이미지 안에 설정하기 위한 명령.
+- `ONBUILD`  명령은 명령의 실행 타이밍을 늦출 수 있음.
+
+```
+ONBUILD [command]
+```
+
+- Dockerfile로부터 생성한 이미지를 베이스 이미지로 한 다른 Dockerfile을 빌드할 때 실행하고 싶은 명령을 기술 함
+
+### 시스템 콜 시그널의 설정(STOPSIGNAL)
+
+- 컨테이너를 종료 할 때 송신하는 시그널
+
+```
+STOPSIGNAL [signal]
+```
+
+### 컨테이너의 헬스 체크 명령(HEALTHCHECK)
+
+```
+HEALTHCHECK [option] CMD [command]
+```
+
+- 컨테이너 안의 프로세스가 정상적으로 작동하고 있는지를 체크하고 싶을 때
+
+## 파일 설정
+
+### 파일 및 디렉토리 추가 (ADD 명령)
+
+```
+ADD <호스트의 파일 경로> <도커 이미지의 파일 경로>
+```
+
+- `ADD ` 명령은 호스트상의 파일이나 디렉토리, 원격 파일을 Docker 이미지 안으로 복사 함.
+
+### 파일 복사( COPY 명령)
+
+```
+COPY <호스트 파일 경로> <Docker 이미지의 파일 경로>
+```
+
+- `ADD` : 원격 파일의 다운로드나 아카이브의 압축 해제 등과 같은 기능을 가지고 있음
+- `COPY` : 호스트상의 파일을 이미지 안으로 복사하는 처리만 함
